@@ -124,7 +124,7 @@ class IpGeoBaseTest(TestCase):
 
     def test_update_geography_empty_data(self):
         command = IpGeobase()
-        cities_info = command._update_geography(self.countries, self.regions, self.cities)
+        cities_info = command._update_geography(self.countries, self.regions, self.cities, self.cidr['city_country_mapping'])
 
         self.assertEqual(set(Country.objects.all().values_list('code', flat=True)), self.countries)
         self.assertEqual(list(Region.objects.all().values('name', 'country__code')), self.regions)
@@ -139,7 +139,7 @@ class IpGeoBaseTest(TestCase):
         City.objects.create(name=u'Березовский', id=1057, region=kemerovo)
 
         backend = IpGeobase()
-        backend._update_geography(self.countries, self.regions, self.cities)
+        backend._update_geography(self.countries, self.regions, self.cities, self.cidr['city_country_mapping'])
 
         self.assertEqual(set(Country.objects.all().values_list('code', flat=True)), self.countries)
         self.assertItemsEqual(list(Region.objects.all().values('name', 'country__code')), self.regions)
